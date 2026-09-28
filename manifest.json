@@ -1,0 +1,11 @@
+{
+    "display_name": "Timeline Retcon Merger",
+    "loading_order": 150,
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Rojikku",
+    "version": "0.1.0",
+    "homePage": ""
+}
