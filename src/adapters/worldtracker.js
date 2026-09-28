@@ -1,4 +1,9 @@
-// WorldTracker — verified against 0.1.0.
+// WorldTracker — LEGACY FALLBACK.
+//
+// Current WorldTracker handles the 'timeline_retcon_applied' event itself
+// (sets globalThis.WorldTracker.handlesRetconEvent, see WorldTracker/docs/API.md)
+// and stashes/restores dropped entries by retconId, so this adapter steps aside.
+// The code below only runs for WorldTracker builds without that flag.
 //
 // chat_metadata.WorldTracker keeps:
 //   snapshots { [mesId]: {kf, data} | {base: mesId, patch} }  pre-turn state per message
@@ -58,7 +63,11 @@ export default {
         const live = ctx().chatMetadata?.WorldTracker;
         if (!live) return { report, books: [], applyMeta() {}, log: null };
         if (supportsRetconEvent(live)) {
-            report.info.push('WorldTracker handles retcons itself; left to it.');
+            report.info.push('WorldTracker re-keys its own saved states when notified.');
+            const old = prevLog?.removed;
+            if (op.direction === 'undo' && old && (Object.keys(old.snapshots ?? {}).length || old.history?.length || old.pending?.length)) {
+                report.warnings.push('This merge was made before WorldTracker handled retcons itself. The tracker states it dropped cannot be put back; those messages fall back to the nearest earlier saved state.');
+            }
             return { report, books: [], applyMeta() {}, log: null };
         }
 

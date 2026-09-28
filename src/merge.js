@@ -232,8 +232,10 @@ async function commit({ label, op, results, mutateChat, afterMeta }) {
         }
     }
 
+    // retconId lets listeners (WorldTracker) pair a merge with its undo; start can differ between the two.
     await ctx().eventSource.emit(RETCON_EVENT, {
-        direction: op.direction, chatId: op.chatId, start: op.start, removed: op.removed, inserted: op.inserted,
+        direction: op.direction, chatId: op.chatId, retconId: op.retconId,
+        start: op.start, removed: op.removed, inserted: op.inserted,
     });
     await ctx().reloadCurrentChat();
 
@@ -269,6 +271,7 @@ export async function applyMerge(plan) {
     if (report.blockers.length) throw new Error(report.blockers.map(b => b.text).join('\n'));
 
     const id = ctx().uuidv4();
+    op.retconId = id;
     const inserted = plan.messages.map((m, i) => prepareInserted(m, id, i));
     const record = {
         id,
@@ -361,6 +364,7 @@ export async function applyUndo(record) {
 
     const op = undoOp(record, loc);
     op.chatRef = currentChatRef();
+    op.retconId = record.id;
     const { results, report } = await prepareAll(op, record.adapterLogs ?? {});
     if (report.blockers.length) throw new Error(report.blockers.map(b => b.text).join('\n'));
 

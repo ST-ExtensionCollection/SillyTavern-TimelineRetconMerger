@@ -2,7 +2,7 @@
 
 A SillyTavern extension that takes a range of messages from a branch or checkpoint and merges it into the open chat. It can replace a placeholder or insert without replacing anything. The replaced messages are archived so you can read them later. Index-based data in Memory Books and WorldTracker is remapped so it keeps pointing at the right messages.
 
-Built against SillyTavern 1.19.0 (staging), Memory Books 9.1.1 and WorldTracker 0.1.0.
+Built against SillyTavern 1.19.0 (staging), Memory Books 9.1.1 and WorldTracker 0.1.0 (with its `timeline_retcon_applied` handler, commit 3b44d06).
 
 ## Install
 
@@ -61,7 +61,7 @@ Merged messages get a colored left border and a ⎇ badge next to the speaker na
 | Memory Books, chat metadata | `highestMemoryProcessed` (if it sits inside the replaced range, you choose *unprocessed* or *processed*); `autoSummaryNextPromptAt` |
 | Memory Books, lorebooks (every lorebook is scanned) | For memories whose `STMB_chatId` is this chat: `STMB_start` and `STMB_end`. A memory that covered the replaced range gets a longer range and a "consider regenerating" warning. A partial overlap is listed and left unchanged. Also updated: side-prompt regeneration snapshots, `STMB_*_lastMsgId`, and topical-clip source |
 | Memory Books, branch memories (optional) | Memories written in the branch for the merged messages are moved to this chat's positions. If Memory Books made a `"<book> Branch N"` copy for the branch, they are copied into the parent lorebook instead. |
-| WorldTracker | Snapshots, history and pending entries are re-keyed. Entries belonging to replaced messages are dropped, and restored on undo. Delta snapshots are rebuilt as keyframes when needed. |
+| WorldTracker | Handled by WorldTracker itself: this extension emits `timeline_retcon_applied` (with `retconId`), and WorldTracker re-keys its saved states, stashes what the merge dropped and restores it on undo. A built-in fallback adapter only runs for older WorldTracker builds that don't advertise `handlesRetconEvent`. |
 | SillyTavern | World Info sticky and cooldown timers |
 
 Some things are **warned about but not changed**: StoryMode, RPG Companion's chapter checkpoint and Tracker ids. Some are **stale but harmless**: Prompt Itemization, `{{scene}}` numbers in memory titles, and the vector store, which heals on its next sync.
@@ -71,6 +71,7 @@ Some things are **warned about but not changed**: StoryMode, RPG Companion's cha
 - Memory Books scene markers (► / ◄) must be cleared before merging. Memory Books keeps them in a module cache that would overwrite any shifted values.
 - Undo does not restore the removed checkpoint link, because the branch may already be deleted.
 - Deleting the branch leaves Memory Books' branch lorebook copy (if any) orphaned. Memories from the branch that weren't adopted can no longer be regenerated. The delete confirmation lists this.
+- Undoing a merge made before WorldTracker handled retcons itself can't restore the tracker states that merge dropped; the undo preview warns about it.
 - The archive of replaced messages is stored in `chat_metadata`. Branches created later from this chat therefore carry a copy of it.
 
 ## Test checklist (run on a copy of a chat)

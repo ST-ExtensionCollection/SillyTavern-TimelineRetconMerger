@@ -1,3 +1,5 @@
+> **Status (2026-09-27):** resolved. WorldTracker implemented item 1 (with `retconId` stash/restore) and item 3, and declined item 2. See `WorldTracker/docs/trm-handoff.md` and `WorldTracker/docs/API.md`. TRM now sends `retconId` and its own adapter steps aside.
+
 # Notes for the WorldTracker session
 
 These notes come from the Timeline Retcon Merger (TRM), which splices message ranges into the middle of a chat.
