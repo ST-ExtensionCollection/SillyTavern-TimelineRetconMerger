@@ -1,0 +1,203 @@
+/* Timeline Retcon Merger — uses ST theme variables so it follows the active theme. */
+
+.trm-settings .trm-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.trm-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0;
+}
+
+.trm-row input[type="number"] {
+    width: 6em;
+}
+
+.trm-muted {
+    opacity: 0.75;
+    font-size: 0.9em;
+}
+
+.trm-empty {
+    opacity: 0.6;
+    font-style: italic;
+    padding: 6px 0;
+}
+
+.trm-wizard,
+.trm-preview,
+.trm-viewer,
+.trm-list {
+    text-align: left;
+}
+
+.trm-wizard select.trm-source,
+.trm-wizard select.trm-srcend {
+    max-width: 100%;
+    flex: 1 1 16em;
+}
+
+.trm-target-preview,
+.trm-src-info {
+    margin: 6px 0;
+    padding: 6px 8px;
+    border-left: 3px solid var(--SmartThemeQuoteColor);
+    background: var(--black30a);
+    border-radius: 4px;
+}
+
+.trm-options {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+/* Two-column original/current view; stacks on narrow screens. */
+.trm-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.trm-columns[data-view="original"],
+.trm-columns[data-view="current"] {
+    grid-template-columns: 1fr;
+}
+
+.trm-columns[data-view="original"] .trm-col-current,
+.trm-columns[data-view="current"] .trm-col-original {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .trm-columns {
+        grid-template-columns: 1fr;
+    }
+}
+
+.trm-columns > div {
+    min-width: 0;
+}
+
+.trm-columns h4 {
+    margin: 4px 0;
+}
+
+.trm-msg {
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    background: var(--SmartThemeBotMesBlurTintColor);
+}
+
+.trm-msg-user {
+    background: var(--SmartThemeUserMesBlurTintColor);
+}
+
+.trm-msg-head {
+    display: flex;
+    gap: 6px;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+
+.trm-msg-idx {
+    opacity: 0.6;
+    font-size: 0.85em;
+}
+
+.trm-msg-text {
+    overflow-wrap: anywhere;
+}
+
+.trm-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 8px 0;
+}
+
+.trm-report-section {
+    margin: 6px 0;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border-left: 4px solid transparent;
+    background: var(--black30a);
+}
+
+.trm-report-section h4 {
+    margin: 2px 0;
+}
+
+.trm-report-section ul {
+    margin: 2px 0 2px 1.2em;
+    padding: 0;
+}
+
+.trm-blockers { border-left-color: #d9534f; }
+.trm-conflicts { border-left-color: #f0ad4e; }
+.trm-warnings { border-left-color: #e6c84a; }
+.trm-info { border-left-color: #5bc0de; }
+
+.trm-src {
+    font-size: 0.8em;
+    opacity: 0.75;
+    border: 1px solid var(--SmartThemeBorderColor);
+    border-radius: 3px;
+    padding: 0 3px;
+    margin-right: 4px;
+}
+
+.trm-bad {
+    color: #f0ad4e;
+}
+
+.trm-list-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--SmartThemeBorderColor);
+}
+
+.trm-list-item > div:first-child {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.trm-list-item.trm-current {
+    background: var(--black30a);
+}
+
+/* In-chat indicators */
+#chat .mes.trm-merged {
+    border-left: 3px solid var(--SmartThemeQuoteColor);
+}
+
+#chat .mes.trm-merged.trm-first {
+    border-top-left-radius: 0;
+}
+
+#chat .mes.trm-pending {
+    border-left: 3px dashed var(--SmartThemeEmColor);
+}
+
+.trm-badge {
+    cursor: pointer;
+    margin-left: 6px;
+    opacity: 0.7;
+    font-size: 0.85em;
+}
+
+.trm-badge:hover {
+    opacity: 1;
+}
